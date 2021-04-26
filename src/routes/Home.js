@@ -6,7 +6,7 @@ import Yweet from "components/Yweet";
 const Home = ({ userObj }) => {
   const [yweet, setYweet] = useState("");
   const [yweets, setYweets] = useState([]);
-  const [attachment, setAttachment] = useState();
+  const [attachment, setAttachment] = useState("");
 
   useEffect(() => {
     dbService.collection("yweets").onSnapshot((snapshot) => {
@@ -19,11 +19,14 @@ const Home = ({ userObj }) => {
   }, []);
   const onSubmit = async (event) => {
     event.preventDefault();
-    const attachmentRef = storageService
-      .ref()
-      .child(`${userObj.uid}/${uuidv4()}`);
-    const response = await attachmentRef.putString(attachment, "data_url");
-    const attachmentUrl = await response.ref.getDownloadURL();
+    let attachmentUrl = "";
+    if (attachment !== "") {
+      const attachmentRef = storageService
+        .ref()
+        .child(`${userObj.uid}/${uuidv4()}`);
+      const response = await attachmentRef.putString(attachment, "data_url");
+      attachmentUrl = await response.ref.getDownloadURL();
+    }
     const yweetObj = {
       text: yweet,
       createdAt: Date.now(),
