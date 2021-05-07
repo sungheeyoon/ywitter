@@ -7,13 +7,16 @@ const Home = ({ userObj }) => {
   const [yweets, setYweets] = useState([]);
 
   useEffect(() => {
-    dbService.collection("yweets").onSnapshot((snapshot) => {
-      const yweetArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setYweets(yweetArray);
-    });
+    dbService
+      .collection("yweets")
+      .orderBy("createdAt", "desc")
+      .onSnapshot((snapshot) => {
+        const yweetArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setYweets(yweetArray);
+      });
   }, []);
   return (
     <div className="container">

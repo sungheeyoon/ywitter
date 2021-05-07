@@ -26,7 +26,10 @@ const YweetFactory = ({ userObj }) => {
       createrId: userObj.uid,
       attachmentUrl,
     };
-    await dbService.collection("yweets").add(yweetObj);
+    await dbService
+      .collection("yweets")
+
+      .add(yweetObj);
     setYweet("");
     setAttachment("");
   };
